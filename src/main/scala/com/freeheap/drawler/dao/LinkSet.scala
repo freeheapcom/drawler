@@ -8,42 +8,42 @@ import com.freeheap.drawler.drivers.{RedisConnection, RedisConnectionFactory}
 object LinkSet {
   final val DEF_TIMEOUT = 2000
 
-  def chckExistsFromSingle(conn: RedisConnection, queueName: String, data: String): Option[Boolean] = {
+  def chckExistsFromSingle(conn: RedisConnection, setName: String, data: String): Option[Boolean] = {
     Option(conn.getJedis(DEF_TIMEOUT)) match {
       case Some(j) =>
-        Option(j.sismember(queueName, data))
+        Option(j.sismember(setName, data))
       case None => None
     }
   }
 
-  def chckExistsFromCluster(conn: RedisConnection, queueName: String, data: String): Option[Boolean] = {
+  def chckExistsFromCluster(conn: RedisConnection, setName: String, data: String): Option[Boolean] = {
     Option(conn.getCluster(DEF_TIMEOUT)) match {
       case Some(c) =>
-        Option(c.sismember(queueName, data))
+        Option(c.sismember(setName, data))
       case None => None
     }
   }
 
 
-  def addDataToSingle(conn: RedisConnection, queueName: String, data: String): Unit = {
+  def addDataToSingle(conn: RedisConnection, setName: String, data: String): Unit = {
     Option(conn.getJedis(DEF_TIMEOUT)) match {
       case Some(j) =>
-        j.sadd(queueName, data)
+        j.sadd(setName, data)
       case None =>
     }
   }
 
-  def addDataToCluster(conn: RedisConnection, queueName: String, data: String): Unit = {
+  def addDataToCluster(conn: RedisConnection, setName: String, data: String): Unit = {
     Option(conn.getCluster(DEF_TIMEOUT)) match {
       case Some(c) =>
-        c.sadd(queueName, data)
+        c.sadd(setName, data)
       case None =>
     }
 
   }
 
-  def apply(connStr: String, queueName: String) = {
-    new LinkSet(RedisConnectionFactory(connStr), queueName)
+  def apply(connStr: String, setName: String) = {
+    new LinkSet(RedisConnectionFactory(connStr), setName)
   }
 }
 
