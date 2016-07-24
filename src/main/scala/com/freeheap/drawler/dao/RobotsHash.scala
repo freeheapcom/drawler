@@ -5,7 +5,7 @@ import com.freeheap.drawler.drivers.{RedisConnection, RedisConnectionFactory}
 /**
   * Created by william on 7/21/16.
   */
-object RobotsSet {
+object RobotsHash {
 
   import com.freeheap.drawler.drivers.RedisConnection
 
@@ -46,16 +46,16 @@ object RobotsSet {
   }
 
   def apply(connStr: String, hashName: String) = {
-    new RobotsSet(RedisConnectionFactory(connStr), hashName)
+    new RobotsHash(RedisConnectionFactory(connStr), hashName)
   }
 }
 
-class RobotsSet(conn: RedisConnection, setName: String) {
+class RobotsHash(conn: RedisConnection, setName: String) {
   def getData(f: (RedisConnection, String, String) => Option[String])(data: String): Option[String] = {
     f(conn, setName, data)
   }
 
-  def addSet(f: (RedisConnection, String, String) => Unit)(data: String): Unit = {
-    f(conn, setName, data)
+  def addSet(f: (RedisConnection, String, String, String) => Unit)(key: String, value: String): Unit = {
+    f(conn, setName, key, value)
   }
 }
