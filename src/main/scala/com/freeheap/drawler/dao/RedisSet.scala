@@ -5,10 +5,10 @@ import com.freeheap.drawler.drivers.{RedisConnection, RedisConnectionFactory}
 /**
   * Created by william on 7/11/16.
   */
-object LinkSet {
+object RedisSet {
   final val DEF_TIMEOUT = 2000
 
-  def chckExistsFromSingle(conn: RedisConnection, setName: String, data: String): Option[Boolean] = {
+  def existsFromSingle(conn: RedisConnection, setName: String, data: String): Option[Boolean] = {
     Option(conn.getJedis(DEF_TIMEOUT)) match {
       case Some(j) =>
         Option(j.sismember(setName, data))
@@ -16,7 +16,7 @@ object LinkSet {
     }
   }
 
-  def chckExistsFromCluster(conn: RedisConnection, setName: String, data: String): Option[Boolean] = {
+  def existsFromCluster(conn: RedisConnection, setName: String, data: String): Option[Boolean] = {
     Option(conn.getCluster(DEF_TIMEOUT)) match {
       case Some(c) =>
         Option(c.sismember(setName, data))
@@ -43,11 +43,11 @@ object LinkSet {
   }
 
   def apply(connStr: String, setName: String) = {
-    new LinkSet(RedisConnectionFactory(connStr), setName)
+    new RedisSet(RedisConnectionFactory(connStr), setName)
   }
 }
 
-class LinkSet(conn: RedisConnection, setName: String) {
+class RedisSet(conn: RedisConnection, setName: String) {
   def exists(f: (RedisConnection, String, String) => Option[Boolean])(data: String): Boolean = {
     f(conn, setName, data).getOrElse(false)
   }

@@ -1,7 +1,5 @@
 package com.freeheap.drawler.dao
 
-import java.util.UUID
-
 import com.datastax.driver.core.querybuilder.QueryBuilder
 import com.freeheap.drawler.common.{CrawledData, CrawledDataFullInfo}
 import com.freeheap.drawler.drivers.CassandraDriver

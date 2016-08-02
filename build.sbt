@@ -2,7 +2,7 @@ organization := "com.freeheap"
 
 name := "drawler"
 
-version := "1.0-SNAPSHOT"
+version := "1.1-SNAPSHOT"
 
 scalaVersion := "2.11.8"
 

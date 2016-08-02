@@ -6,7 +6,7 @@ import com.freeheap.drawler.drivers.{RedisConnection, RedisConnectionFactory}
   * Created by william on 7/11/16.
   */
 
-object LinkQueue {
+object RedisQueue {
   final val DEF_TIMEOUT = 2000
 
   def getDataFromSingle(conn: RedisConnection, queueName: String): Option[String] = {
@@ -44,12 +44,12 @@ object LinkQueue {
   }
 
   def apply(connStr: String, queueName: String) = {
-    new LinkQueue(RedisConnectionFactory(connStr), queueName)
+    new RedisQueue(RedisConnectionFactory(connStr), queueName)
   }
 }
 
 
-class LinkQueue(conn: RedisConnection, queueName: String) {
+class RedisQueue(conn: RedisConnection, queueName: String) {
 
   def popQueue(f: (RedisConnection, String) => Option[String]): Option[String] = {
     f(conn, queueName)
